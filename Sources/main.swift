@@ -21,6 +21,8 @@ do {
         try Command.clean(path)
     case .help:
         print(CommandLine.usage)
+    case .version:
+        print("subito-fork-0.1")
     }
 } catch CommandLine.Error.invalidUsage {
     fputs("""

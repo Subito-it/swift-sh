@@ -101,6 +101,7 @@ public enum Mode {
     case editor(Path)
     case clean(Path?)
     case help
+    case version
 
     public enum RunType {
         case stdin
@@ -112,6 +113,8 @@ public enum Mode {
         let command = parser.command()
 
         switch command {
+        case "version"?:
+            self = .version
         case "eject"?:
             let force = parser.flag(long: "--force", short: "-f")
             guard let path = parser.pop({ Path($0) ?? Path.cwd/$0 }) else {
