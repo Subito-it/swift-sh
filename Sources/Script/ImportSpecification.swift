@@ -4,6 +4,7 @@ import Path
 
 public struct ImportSpecification: Codable, Equatable {
     let importName: String
+    let packageName: String
     let dependencyName: DependencyName
     let constraint: Constraint
 
@@ -68,7 +69,7 @@ extension ImportSpecification {
 public extension Array where Element == ImportSpecification {
     var mainTargetDependencies: String {
         return map { """
-            "\($0.importName)"
+            .product(name: "\($0.importName)", package: "\($0.packageName)")
             """
             }.joined(separator: ", ")
     }

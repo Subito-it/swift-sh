@@ -20,7 +20,7 @@ func parse(_ line: String, from input: Script.Input) throws -> ImportSpecificati
     }
 
     let importName = extractImport(line: line[match.range(at: 1)])
-
+    
     let constraint: ImportSpecification.Constraint
     if match.isMatch(at: 3), match.isMatch(at: 4) {
         let constrainer = line[match.range(at: 3)]
@@ -41,9 +41,15 @@ func parse(_ line: String, from input: Script.Input) throws -> ImportSpecificati
     } else {
         constraint = .latest
     }
-
+    
+    // Quick and dirty fix:
+    // there's an issue for dependency having a module name different from the package name
+    // see comment at the beginning of Script.write() method
+    let packageName = importName == "SourceKittenFramework" ? "SourceKitten" : importName
+    
     return ImportSpecification(
         importName: importName,
+        packageName: packageName,
         dependencyName: try .init(rawValue: String(line[match.range(at: 2)]),
                                   importName: importName,
                                   from: input),
